@@ -7,12 +7,12 @@ nix wrapper for [inkwatchy](https://github.com/Szybet/InkWatchy)
 current scope: upstream `Watchy_2` build.
 
 TODO:
-- nix-managed inkwatchy options;
-- secrets
-- flashing
-- scom
-- local patches
-- hardware validation for targets other than Watchy 2.
+- [ ] nix-managed inkwatchy options;
+- [ ] secrets
+- [ ] flashing
+- [ ] scom
+- [ ] local patches
+- [ ] hardware validation for targets other than Watchy 2.
 
 upstream is a flake input, each build uses a temporary writable copy.
 
