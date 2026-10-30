@@ -8,11 +8,14 @@ if [[ -n "$config_path" && ! -f "$config_path" ]]; then
   echo "missing config: $config_path" >&2
   exit 1
 fi
+if [[ -n "$config_path" ]]; then
+  config_path="$(realpath "$config_path")"
+fi
 
 cd "$root"
 
 if [[ -n "$config_path" ]]; then
-  export INKWATCHY_CONFIG_PATH="$(realpath "$config_path")"
+  export INKWATCHY_CONFIG_PATH="$config_path"
   exec nix eval --impure --json --expr \
     'import ./lib/eval-config.nix { configPath = builtins.getEnv "INKWATCHY_CONFIG_PATH"; }'
 fi

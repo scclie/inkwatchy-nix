@@ -78,4 +78,36 @@ if bash scripts/render-config.sh \
 fi
 grep -Fq 'duplicate define: DEBUG' "$tmpdir/error"
 
+bash scripts/render-catalogue.sh tests/fixtures/config-template.h \
+  > "$tmpdir/config.nix.example"
+
+grep -Fxq '    target = "Watchy_2";' "$tmpdir/config.nix.example"
+grep -Fxq '      # main options' "$tmpdir/config.nix.example"
+grep -Fxq '      # DEBUG = 0;' "$tmpdir/config.nix.example"
+grep -Fxq '      # SCOM_TASK = 0;' "$tmpdir/config.nix.example"
+grep -Fxq '      # DEBUG_CPU_SPEED = "normalSpeed";' "$tmpdir/config.nix.example"
+if grep -Fq 'BLOCK_ONLY' "$tmpdir/config.nix.example"; then
+  echo "block comment define was catalogued" >&2
+  exit 1
+fi
+
+mkdir "$tmpdir/catalogue-project"
+(
+  cd "$tmpdir/catalogue-project"
+  INKWATCHY_CONFIG_TEMPLATE="$root/tests/fixtures/config-template.h" \
+    bash "$root/scripts/config-catalogue.sh" init
+  test -f config.nix.example
+  printf '{}\n' > config.nix
+  printf 'keep\n' > config.nix.example
+  if INKWATCHY_CONFIG_TEMPLATE="$root/tests/fixtures/config-template.h" \
+    bash "$root/scripts/config-catalogue.sh" init >/dev/null 2>&1; then
+    echo "init overwrote config.nix" >&2
+    exit 1
+  fi
+  grep -Fxq 'keep' config.nix.example
+  INKWATCHY_CONFIG_TEMPLATE="$root/tests/fixtures/config-template.h" \
+    bash "$root/scripts/config-catalogue.sh" update
+  grep -Fxq '    target = "Watchy_2";' config.nix.example
+)
+
 echo "config generation: ok"

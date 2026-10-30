@@ -46,6 +46,17 @@
             exec ${pkgs.bash}/bin/bash ${./scripts/build-watchy2.sh} "$@"
           '';
         };
+        makeCatalogueApp = name: action: pkgs.writeShellApplication {
+          inherit name;
+          runtimeInputs = with pkgs; [ bash coreutils nix ];
+          text = ''
+            export INKWATCHY_CONFIG_TEMPLATE=${inkwatchy}/src/defines/templates/gifnoc-template.h
+            export INKWATCHY_NIX_ROOT=${./.}
+            exec ${pkgs.bash}/bin/bash ${./scripts/config-catalogue.sh} ${action}
+          '';
+        };
+        initConfig = makeCatalogueApp "init-config" "init";
+        updateOptionCatalogue = makeCatalogueApp "update-option-catalogue" "update";
       in
       {
         devShells.default = pkgs.mkShell {
@@ -80,6 +91,14 @@
         apps.build-watchy2 = {
           type = "app";
           program = "${buildWatchy2}/bin/build-watchy2";
+        };
+        apps.init-config = {
+          type = "app";
+          program = "${initConfig}/bin/init-config";
+        };
+        apps.update-option-catalogue = {
+          type = "app";
+          program = "${updateOptionCatalogue}/bin/update-option-catalogue";
         };
       });
 }
