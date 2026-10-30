@@ -10,7 +10,22 @@ let
         line;
     in
       if match == null then null else { name = builtins.elemAt match 1; };
-  definitions = builtins.filter (definition: definition != null) (map parseDefine lines);
+  parsed = builtins.foldl' (state: line:
+    let
+      startsBlock = builtins.match ".*/\\*.*" line != null;
+      endsBlock = builtins.match ".*\\*/.*" line != null;
+      inBlock = state.inBlock || startsBlock;
+      definition = if inBlock then null else parseDefine line;
+    in {
+      inBlock = if state.inBlock then !endsBlock else startsBlock && !endsBlock;
+      entries = state.entries ++ [{ inherit definition line; }];
+    }
+  ) {
+    inBlock = false;
+    entries = [];
+  } lines;
+  definitions = builtins.filter (definition: definition != null)
+    (map (entry: entry.definition) parsed.entries);
   names = map (definition: definition.name) definitions;
   known = builtins.listToAttrs (map (name: { inherit name; value = true; }) names);
   typedNames = builtins.attrNames config.defines;
@@ -27,13 +42,11 @@ let
       builtins.toJSON value;
   typedValues = builtins.mapAttrs (_: renderTyped) config.defines;
   values = typedValues // config.rawDefines;
-  renderLine = line:
-    let definition = parseDefine line;
-    in
-      if definition != null && builtins.hasAttr definition.name values then
-        "#define ${definition.name} ${values.${definition.name}}"
-      else
-        line;
+  renderLine = entry:
+    if entry.definition != null && builtins.hasAttr entry.definition.name values then
+      "#define ${entry.definition.name} ${values.${entry.definition.name}}"
+    else
+      entry.line;
 in
 if builtins.length names != builtins.length (builtins.attrNames known) then
   throw "duplicate template define"
@@ -42,4 +55,4 @@ else if duplicateNames != [] then
 else if unknownNames != [] then
   throw "unknown define: ${builtins.head unknownNames}"
 else
-  builtins.concatStringsSep "\n" (map renderLine lines)
+  builtins.concatStringsSep "\n" (map renderLine parsed.entries)

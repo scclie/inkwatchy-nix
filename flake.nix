@@ -40,6 +40,7 @@
           ];
           text = ''
             export INKWATCHY_SRC=${inkwatchy}
+            export INKWATCHY_NIX_ROOT=${./.}
             export INKWATCHY_NIX_PATCH_SCRIPT=${./scripts/patch-upstream.sh}
             export PLATFORMIO_PYTHONPATH=${pkgs.platformio}/${pkgs.python3.sitePackages}
             exec ${pkgs.bash}/bin/bash ${./scripts/build-watchy2.sh} "$@"

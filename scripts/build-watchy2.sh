@@ -2,9 +2,11 @@
 set -euo pipefail
 
 : "${INKWATCHY_SRC:?INKWATCHY_SRC must point to upstream InkWatchy}"
+: "${INKWATCHY_NIX_ROOT:?INKWATCHY_NIX_ROOT must point to this adapter}"
 : "${INKWATCHY_NIX_PATCH_SCRIPT:?INKWATCHY_NIX_PATCH_SCRIPT must point to patch-upstream.sh}"
 
 source "$INKWATCHY_NIX_PATCH_SCRIPT"
+project_root="$PWD"
 
 if [[ ! -f "$INKWATCHY_SRC/platformio.ini" ]]; then
   echo "missing upstream platformio.ini: $INKWATCHY_SRC/platformio.ini" >&2
@@ -28,8 +30,15 @@ mkdir -p "$output_dir"
 cp -a --no-preserve=ownership "$INKWATCHY_SRC/." "$worktree/"
 chmod -R u+w "$worktree"
 
-if [[ ! -f "$worktree/src/defines/config.h" ]]; then
-  cp "$worktree/src/defines/templates/gifnoc-template.h" "$worktree/src/defines/config.h"
+config_source="$project_root/config.nix"
+if [[ -f "$config_source" ]]; then
+  bash "$INKWATCHY_NIX_ROOT/scripts/render-config.sh" \
+    "$worktree/src/defines/templates/gifnoc-template.h" \
+    "$config_source" > "$worktree/src/defines/config.h"
+else
+  bash "$INKWATCHY_NIX_ROOT/scripts/render-config.sh" \
+    "$worktree/src/defines/templates/gifnoc-template.h" \
+    > "$worktree/src/defines/config.h"
 fi
 if [[ ! -f "$worktree/src/defines/confidential.h" ]]; then
   cp "$worktree/src/defines/templates/laitnedifnoc-template.h" "$worktree/src/defines/confidential.h"

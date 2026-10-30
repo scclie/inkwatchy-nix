@@ -47,6 +47,20 @@ if bash scripts/render-config.sh \
 fi
 grep -Fq 'unknown define: UNKNOWN' "$tmpdir/error"
 
+cat > "$tmpdir/block-only.nix" <<'NIX'
+{
+  inkwatchy.defines.BLOCK_ONLY = 1;
+}
+NIX
+
+if bash scripts/render-config.sh \
+  tests/fixtures/config-template.h \
+  "$tmpdir/block-only.nix" >"$tmpdir/block-only.h" 2>"$tmpdir/error"; then
+  echo "block comment define was accepted" >&2
+  exit 1
+fi
+grep -Fq 'unknown define: BLOCK_ONLY' "$tmpdir/error"
+
 cat > "$tmpdir/duplicate.nix" <<'NIX'
 {
   inkwatchy = {
