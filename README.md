@@ -2,52 +2,75 @@
 
 nix wrapper for [inkwatchy](https://github.com/Szybet/InkWatchy)
 
-## ## scope
+requirements: linux, nix flakes, network on the first platformio build.
 
-current scope: upstream `Watchy_2` build.
+scope: watchy v2 *(i can’t test this on other versions ;/ )*
 
-TODO:
-- [ ] nix-managed inkwatchy options;
+## ~ TODO
+- [x] nix-managed inkwatchy options;
 - [ ] secrets
-- [ ] flashing
+- [x] Watchy_2 build
+- [x] config.h option catalogue and config.nix overrides
+- [x] flashing
 - [ ] scom
 - [ ] local patches
-- [ ] hardware validation for targets other than Watchy 2.
+- [ ] build descriptors for other Watchy targets
+- [ ] condition.h and platformio option coverage
 
-upstream is a flake input, each build uses a temporary writable copy.
+upstream is a flake input, each build uses a temp writable copy.
 
-## ## requirements
-
-- nix and flakes enabled;
-- network access on the first run.
-
-!! tested only on nixos
-
-## ## dev shell
+## ## commands
 
 ```bash
+# development environment
 nix develop
-```
 
-exports `$INKWATCHY_UPSTREAM` and provides `pio`, rust, and build tools.
+# generate the commented upstream option catalogue
+nix run .#init-config
+cp config.nix.example config.nix # and edit it
 
-## ## build
+# regenerate only the catalogue after an upstream update
+nix run .#update-option-catalogue
 
-```bash
+# build
 nix run .#build-watchy2
+bash scripts/check-result.sh out/watchy2
+
+# flash only the application partition at 0x10000
+nix run .#flash-watchy2 -- \
+  --port /dev/ttyACM0 \
+  --confirm
 ```
 
-output:
+## ## config
+
+smth like:
+```nix
+{
+  inkwatchy = {
+    defines = {
+      DEBUG = 1;
+      SCOM_TASK = 1;
+    };
+
+    rawDefines = {
+      DEBUG_CPU_SPEED = "normalSpeed";
+    };
+  };
+}
+```
+
+`defines`: bool, int, c strings. `rawDefines`: unquoted c tokens.
+
+without `config.nix`, upstream defaults are used.
+
+## ## output
+
 ```text
-out/watchy2/
-├── firmware.bin
-└── build-info.txt
+ out
+└──  watchy2
+    ├──  build-info.txt
+    └──  firmware.bin
 ```
 
-## ## verify output
-
-```bash
-bash scripts/check-result.sh ./out/watchy2
-```
-
-`firmware.bin` is an esp application image.
+!! flash does not erase or replace bootloader, partition table, or LittleFS.

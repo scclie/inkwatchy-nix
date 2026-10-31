@@ -1,0 +1,406 @@
+{
+  inkwatchy = {
+    target = "Watchy_2";
+
+    defines = {
+      # Watchfaces!
+      # https://github.com/Szybet/InkWatchy/wiki/Watchfaces
+      # Keep at least one enabled. If you bother me with a problem and the problem will be that you disabled all watchfaces, then I will credit you when implementing a future counter measure.
+      # WATCHFACE_12H = 0;
+      # InkField
+      # WATCHFACE_INKFIELD_SZYBET = 1;
+      # Taychron
+      # WATCHFACE_TAYCHRON = 1;
+      # WATCHFACE_TAYCHRON_DATE = 0;
+      # Slate
+      # WATCHFACE_SLATE = 1;
+      # Domain
+      # WATCHFACE_DOMAIN_DOTP = 0;
+      # Terrain
+      # WATCHFACE_TERRAIN = 1;
+      # Orbital watchface
+      # WATCHFACE_ORBITAL = 1;
+      # Dosy watchface
+      # WATCHFACE_DOSY = 1;
+      # Cyber watchface
+      # WATCHFACE_CYBER = 1;
+      # Station watchface
+      # WATCHFACE_STATION = 0;
+      # Shades & Analog (Code preview watchfaces)
+      # WATCHFACE_SHADES_SZYBET = 1;
+      # WATCHFACE_ANALOG_SHARP_SZYBET = 1;
+      # Retrojump watchface
+      # WATCHFACE_RETROJUMP = 0;
+      # Starfield watchface (Ported by GabryDX, based on original Prokuon)
+      # WATCHFACE_STARFIELD = 0;
+      # GSR watchfaces
+      # Because of the ways they are written (even in native watchyGSR) they will provide worse battery life than native inkwatchy watchfaces -
+      # Because they write everything every minute, unlike inkwatchy watchfaces which check what needs to be rewritten
+      # If you plan to write a watchface specifically for inkwatchy, don't use this compability layer, please
+      # Also lp core for yatchy for those is not supported
+      # Also to note, they are all ported, the original authours can be found under those links (and github / google in general):
+      # All credits go to them :)
+      # Expect lower quality of those watchfaces functionalities (Watchy gsr still uses openweather map, we dont, so we remove that)
+      # GSR_WATCHFACES = 0;
+      # GSR_WATCHFACES_OPTIMISE = 1;
+      # GSR_CLASSICS_BASICS = 0;
+      # GSR_CLASSICS_7SEG = 0;
+      # GSR_CLASSICS_DOS = 0;
+      # GSR_CLASSICS_POKE = 0;
+      # GSR_CLASSICS_STARRY = 0;
+      # GSR_CLASSICS_TETRIS = 0;
+      # GSR_CLASSICS_MAC = 0;
+      # GSR_CLASSICS_MARIO = 0;
+      # GSR_STATIONARY = 0;
+      # Basics
+      # DEBUG_MENUS = 1;
+      # Those vibrations settings are dependent on motor task priority
+      # VIBRATION_BUTTON_TIME = 50;
+      # VIBRATION_BUTTON_LONG_TIME = 60;
+      # VIBRATION_ACTION_TIME = 200;
+      # VIBRATION_POWER = 155;
+      # Motor power multiplier
+      # VIBRATION_MULTIPLIER_OVERWRITE = 0;
+      # STEPS_GOAL = 7000;
+      # Precise step counting
+      # PRECISE_STEP_COUNTING = 1;
+      # PRECISE_STEPS_DAYS_LIMIT = 10;
+      # Backups RTC memory to flash, so after updating the firmware (When resources weren't updated, or rtc memory wasn't changed) it will still keep data like alarms
+      # Might introduce weird behaviour or crashes on a update, but it tries to avoid it.
+      # Might consume a bit of battery, but that's marginal.
+      # It may also increase flash usage and life, but hey, mine still works so yours will too
+      # If it doesn't save something you want, add it yourself or request it
+      # RTC_MEMORY_BACKUP = 0;
+      # 0: No rotation (0 degrees) - default
+      # 1: Rotate 90 degrees clockwise
+      # 2: Rotate 180 degrees
+      # 3: Rotate 270 degrees clockwise
+      # SCREEN_ROTATION = 0;
+      # Inverts the color, initially
+      # Yatchy lp core will not work correctly with inverted watchface, please request this feature to work if you are an yatchy owner
+      # SCREEN_INVERT_COLORS = 0;
+      # WATCHFACE_INVERT_COLORS = 0;
+      # Remap buttons
+      # This is not idiot proof, do not set 2 remaps to the same button
+      # Possible values:
+      # Timezone! So:
+      # - You don't set anything, it will try to guess your timezone based on IP when syncing wifi, which will be incorrect sometimes
+      # - If SET_CLOCK_GUI is enabled, you can set pure UTC timezones via GUI in settings/Clock.
+      # ^If you set anything via the GUI, it will not try to gues while syncing wifi. Note that GUI won't work for Daylight / Standard time automatically.
+      # ^If you set any of those options below, the option to set timezone manually via gui will not appear.
+      # - You set olson, which still can be incorrect (probably won't). If this is set, there will be no more guesswork
+      # - You set posix, it will overwrite everything above, no quesing or anything
+      # Set this as a string of olson timezone time
+      # List here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      # The "TZ" identifier in the table
+      # TIMEZONE_OLSON = "";
+      # Here are some example websites to get it:
+      # Copy the posix timezone string table column
+      # https://support.cyberdata.net/portal/en/kb/articles/010d63c0cfce3676151e1f2d5442e311
+      # https://github.com/yuan910715/Esp8266_Wifi_Matrix_Clock/blob/master/posix.md
+      # https://www.topyuan.top/posix
+      # https://github.com/majodi/TimeZoneBuilder
+      # This function overwrites the TIMEZONE_OLSON variable if it's set
+      # TIMEZONE_POSIX = "";
+      # MENU_LINES = false;
+      # BUTTON_LONG_PRESS_MS = 500;
+      # FULL_DISPLAY_UPDATE_QUEUE = 60;
+      # LONG_BACK_FULL_REFRESH = 1;
+      # WATCHDOG_TASK = 1;
+      # WATCHDOG_TASK_TIMEOUT = 0;
+      # Drift & NTP & Syncing
+      # Sync wifi is disabled by default because Watchy v2, watchy v3 have bad charging detection and it will drain a lot of battery before detecting it and going to sleep & disabling the wifi - only on yatchy this feature works fully correct, on others it drains more battery. If your battery drained fully, this is the first thing to disable, if that worked report it to me
+      # SYNC_WIFI = 0;
+      # SYNC_WIFI_SINCE_SUCC = 1800;
+      # SYNC_WIFI_SINCE_FAIL = 600;
+      # MANUAL_NTP_OFFSET = 0;
+      # SYNC_NTP_ON_CHARGING_DELAY = 90000;
+      # VALID_PREVIOUS_SYNC_DELAY = 300;
+      # WIFI_CONNECTION_TRIES = 3;
+      # WIFI_CONNECTION_TRIES_PERSISTENT = 1;
+      # WIFI_SYNC_TIME = 10000;
+      # WIFI_ERROR_TIME = 3000;
+      # TIME_DRIFT_CORRECTION = 0;
+      # TIME_DRIFT_MINIMUM_TIME = 24;
+      # FORCE_INTERNAL_RTC = 0;
+      # FORCED_INTERNAL_RTC_QUARTZ = 0;
+      # AVOID_SLEEPING_ON_FULL_MINUTE = 4;
+      # CONNECT_TO_HIDDEN_NETWORKS = 0;
+      # NTP_SERVER_URL = "ntp.ubuntu.com";
+      # Weather
+      # WEATHER_INFO = 1;
+      # MAX_WEATHER_DAYS = 16;
+      # WEATHER_AIR_ENABLED = 1;
+      # MAX_AIR_DAYS = 5;
+      # WEATHER_TRIES = 3;
+      # WEATHER_WATCHFACE_HOUR_OFFSET = 1;
+      # SUNRISE_SUNSET_HOUR_OFFSET = 0;
+      # PRESSURE_HPA_MAX = 1100;
+      # PRESSURE_HPA_MIN = 850;
+      # VISIBILITY_M_MAX = 150;
+      # VISIBILITY_M_MIN = 0;
+      # WIND_SPEED_MAX = 30;
+      # WIND_SPEED_MIN = 0;
+      # Moon
+      # Alarms
+      # INK_ALARMS = 1;
+      # Write the amount of minutes and the label will be done automatically in selected language
+      # ALARM_DURATION_S = 60;
+      # ALARM_MOTOR_DELAY = 1000;
+      # ALARM_MOTOR_TIME = 200;
+      # ALARM_WIFI_MIN_STRENGTH = 60;
+      # ALARM_WIFI_MULTIPLIER = 7;
+      # ALARM_WIFI_WIFI_QUICK_MS = 1500;
+      # ALARM_DISABLE_BACK = 1;
+      # Pomodoro (Using alarms, so needs them)
+      # POMODORO_ALARM = 1;
+      # POMODORO_WORK_M = 25;
+      # POMODORO_SHORT_PAUSE_M = 5;
+      # POMODORO_LONG_PAUSE_M = 15;
+      # POMODORO_LONG_PAUSE_AFTER = 4;
+      # Book things
+      # BOOK = 0;
+      # BOOK_ACC_SWITCHING = 0;
+      # BOOK_ADD_SLEEP_DELAY_MS = 60000;
+      # BOOK_AX_X_PAGE_CHANGE_VALUE_UP = 300;
+      # BOOK_AX_X_PAGE_CHANGE_VALUE_DOWN = 250;
+      # BOOK_AX_Z_BACK_VALUE = 500;
+      # BOOK_AX_Y_BACK_VALUE = 500;
+      # BOOK_AX_X_TOLERANCE = 150;
+      # BOOK_ON_EXIT_GO_PAGE_BACK = 1;
+      # BOOK_AXC_LINE = 1;
+      # BOOK_AXC_LINE_WIDTH = 3;
+      # BOOK_AXC_DIFFERENCE_CHANGE = 15;
+      # BOOK_CHARS_PER_PAGE = 200;
+      # Conway, It will drain your battery a lot
+      # And A LOT of memory
+      # CONWAY = 0;
+      # CONWAY_CPU_SPEED = 0;
+      # CONWAY_MODULE_DEBUG = 0;
+      # Calendar
+      # CALENDAR = 0;
+      # allow insecure url for calendar
+      # ALLOW_INSECURE_CAL = 0;
+      # import only events today onwards
+      # FUTURE_ONLY = 0;
+      # Number of future days to include in calendar
+      # CALENDAR_NEXT_DAYS = 30;
+      # Shorter names needed
+      # CALENDAR_SPLIT_DESCRIPTION = 1;
+      # CALENDAR_SPLIT_DESCRIPTION_STRING = "\\n";
+      # CALENDAR_SPLIT_DESCRIPTION_ARRAY_SIZE = 2;
+      # VIDEO_PLAYER = 0;
+      # Menu to manually set time
+      # SET_CLOCK_GUI = 1;
+      # Watchface modules
+      # MODULE_PERSISTENT = 1;
+      # MODULE_UPDATE_LIMIT_S = 600;
+      # Makes the module update many times and faster in full mode (charging, button wakeup etc.)
+      # this consumes more BATTERY but makes the wifi module more accurate (As in, update the wifi status faster/more accurate - on yatchy really needed)
+      # It's important to note that even with this, modules are optimised no to redraw so often. They will simply check more often if to redraw
+      # MODULES_FAST = 0;
+      # WIFI_MODULE = 1;
+      # Bitcoin is pretty heavy on memory while syncing. If it crashes when enabled for you, some more optimisation might be needed. Create a github issue.
+      # BITCOIN_MODULE = 0;
+      # SMALL_BTC_MODULE = 1;
+      # BITCOIN_SYNC_TRIES = 3;
+      # CONWAY_MODULE = 0;
+      # CONWAY_MODULE_GRID_PERCANTAGE = 50;
+      # BOOK_MODULE = 1;
+      # BOOK_MODULE_CHARS_PER_PAGE = 140;
+      # MODULES_OPERATING_FAST = 1;
+      # IMAGE_MODULE = 1;
+      # IMG_MODULE_CHANGE_EVERY_HOUR = 1;
+      # API_MODULE = 0;
+      # EVENT_MODULE = 0;
+      # ALARM_MODULE = 1;
+      # Power savings
+      # NIGHT_SLEEP_FOR_M = 45;
+      # NIGHT_SLEEP_AFTER_HOUR = 23;
+      # NIGHT_SLEEP_BEFORE_HOUR = 5;
+      # SLEEP_EVERY_MS = 10000;
+      # POWER_SAVING_AFTER = 40;
+      # POWER_SAVING_OFF_AFTER = 20;
+      # LOOP_NO_SCREEN_WRITE_DELAY_MS = 70;
+      # HARDWARE_POWER_SAVINGS = 1;
+      # EXTREME_HARDWARE_POWER_SAVINGS = 0;
+      # ACC_POWER_SAVING = 1;
+      # SOFT_START_THINGS = 1;
+      # SOFT_START_DELAY_MS = 4500;
+      # FORCE_DISABLE_ACC = 0;
+      # LED_MAX_TIME_MS = 30000;
+      # When this is off, if a watchface doesn't have a lp core, the default one will be selected
+      # When this is on, depending on the watchface yatchy could run without a lp core
+      # This makes battery life A LOT WORSE, ONLY ENABLE IT IF YOU ACCEPT THAT
+      # HYBRID_LP_CORE = 0;
+      # Vault
+      # VAULT = 1;
+      # VAULT_FULL_REFRESH = 0;
+      # Pong
+      # PONG = 1;
+      # Tetris
+      # TETRIS = 1;
+      # Jumper
+      # JUMPER = 1;
+      # Snake
+      # SNAKE = 1;
+      # Paint, requires ACC
+      # PAINT = 1;
+      # Maze game, requires ACC
+      # MAZE = 1;
+      # Avoid game, requires ACC
+      # AVOID = 1;
+      # 2048 game, requires ACC
+      # GAME_2048 = 1;
+      # 8-ball game, requires ACC
+      # EIGHTBALL = 1;
+      # Dice app
+      # DICE = 1;
+      # DICE_ANIMATION_TIME_MS = 2000;
+      # Credits page
+      # CREDITS = 1;
+      # Heart monitor
+      # HEART_MONITOR = 0;
+      # BLE things
+      # BLE is heavy, if you enable it and the watch doesn't boot up, it means you exceeded the flash size. Disable other features to reduce flash usage
+      # It's really heavy on memory too. DO NOT ENABLE BLE until you know what you want.
+      # If PANIC happens with this enabled, turn it off, check again
+      # If it works without it, disable other things (snake, bitcoin etc.)
+      # BLE_ENABLED = 0;
+      # BLE_NAME = "InkWatchy";
+      # For keyboard for example
+      # BLE_HOST_ENABLED = 0;
+      # Baiky, requires BLE_ENABLED + Baiky app
+      # BAIKY = 0;
+      # Notes, needs BLE_HOST_ENABLED
+      # NOTES_APP = 0;
+      # Ble peripheral apps, needs BLE_ENABLED
+      # BLE_PERIPHERAL = 0;
+      # Enable at least one of them
+      # PERIPHERAL_TOWERFALL = 0;
+      # PERIPHERAL_BROFORCE = 0;
+      # BLE Tag Scanner app, needs BLE_HOST_ENABLED
+      # BLE_TAG_SCANNER = 0;
+      # BLE_TAG_DEVICE_COUNT = 2;
+      # Advanced
+      # BUTTON_TASK_DELAY = 30;
+      # TIME_FOR_WATCHFACE_TO_SHOW_MS = 2000;
+      # SMALL_BUTTON_DELAY_MS = 10;
+      # AVOID_SLEEP_USB_JTAG = 1;
+      # BUTTON_STUCK_MS = 10000;
+      # Experimental, consumes battery, takes longer to load everything
+      # Probably won't work on devices with low memory (So everything that is not yatchy)
+      # FILESYSTEM_COMPRESSION = 0;
+      # DEFAULT_WATCHFACE_INDEX = 0;
+      # DEFAULT_WATCHFACE_MODULE_INDEX = -1;
+      # Wifi Quick settings
+      # WIFI_QUICK_CHECK_MS = 30;
+      # WIFI_QUICK_MAX_MS = 1250;
+      # Temperature readings
+      # This is highly experimental, dont enable this if you dont have a reason for it, possible reasons (but you still should read the code to understand if it will help you)
+      # - screen goes bad on bad temperatures
+      # - you live in a volcano and need to turn the esp32 off if its above a certain temperature, or below
+      # - you stream youtube and the cpu gets too hot
+      # TEMP_CHECKS_ENABLED = 0;
+      # Enable temp checks for the watchies you specify (I have a few of them, the precision on the esp32 doesn't make sense for this feature)
+      # if you enable temp checks, but the cpu is disabled, it will not try low / high temp fixes
+      # TEMP_ESP32 = 0;
+      # TEMP_ESP32S3 = 1;
+      # TEMP_ESP32C6 = 1;
+      # Those variables won't work for you, you need to edit them yourself after you see the temperature logs
+      # Also everything in Celsius, americans need to metric (Or add support for burgers per inch for inkwatchy)
+      # just joking :D
+      # TEMP_REAL_OFFSET = 0;
+      # TEMP_HIGHER_LIMIT = 45;
+      # TEMP_LOWER_LIMIT = 0;
+      # TEMP_REBOOT_LIMIT = 70;
+      # TEMP_MAX_SCREEN_FIXES = 5;
+      # Shouldn't be changed really
+      # TEMP_MINIMUM = -10;
+      # TEMP_MAXIMUM = 80;
+      # Wifi country
+      # If your wifi connects to ghost networks, freaks out in general, try setting the wifi country for your country
+      # https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_country_codePKcb
+      # WIFI_COUNTRY_FIX = 0;
+      # WIFI_COUNTRY_CODE = "";
+      # WIFI_COUNTRY_FORCE = false;
+      # Debugging help
+      # DEBUG = 0;
+      # EINK_COUNTER = 0;
+      # DUMP_INIT_DEBUG = 0;
+      # DUMP_LOOP_DEBUG = 0;
+      # DUMP_LOOP_SOFTWARE_DEBUG = 0;
+      # SCREEN_SLEEP_INFO = 0;
+      # DRAW_DEBUG_RECT = 0;
+      # DUMP_LOOP_DELAY = 1000;
+      # SPEED_THROUGH_TIME = 0;
+      # NO_SYNC = 0;
+      # VOLTAGE_PRINT_ON = 0;
+      # DISABLE_SLEEP = 0;
+      # DISABLE_SLEEP_PARTIAL = 0;
+      # PUT_LOGS_TO_SERIAL = 1;
+      # PUT_LOGS_TO_FS = 0;
+      # WAIT_FOR_MONITOR = 0;
+      # WAIT_FOR_INPUT = 0;
+      # WAIT_FOR_INPUT_MOTOR = 0;
+      # Ah... too much allocated memory... 10 hours of my life...
+      # LOG_SERIAL_BUFFER_SIZE = 1000;
+      # LOG_FILE_BUFFER_SIZE = 3000;
+      # Max file size for littlefs: 2Gb
+      # https://github.com/littlefs-project/littlefs/issues/738
+      # MAX_LOG_FILE_SIZE_BYTES = 100000;
+      # STOP_ON_RESET = 1;
+      # SERIAL_LOG_DELAY = 0;
+      # SERIAL_LOG_DELAY_MS = 23;
+      # SERIAL_BAUDRATE = 115200;
+      # MINIMAL_LOGS = 1;
+      # SCOM_TASK = 0;
+      # FONT_PREVIEW_MENU = 1;
+      # NO_CHARGING = 0;
+      # RESET_RTC_ON_BOOT = 0;
+      # BATTERY_TIME_DROP = 0;
+      # LP_CORE_TEST_RUN = 0;
+      # LP_CORE_SERIOUS_TEST = 0;
+      # DISABLE_WAKEUP_INTERRUPTS = 0;
+      # MCP_GPIO_EXPANDER_DISABLE = 0;
+      # MCP_GPIO_EXPANDER_DISABLE_INTERRUPTS = 0;
+      # SCREEN_CORNER_WAKEUP = 0;
+      # I2C_SCANNER = 0;
+      # DUMP_LOOP_ACC = 0;
+      # DUMP_LOOP_ACC_DIFF = 0;
+      # SCREENSHOT_ENDPOINT = 0;
+      # SIMPLE_DEEP_SLEEP_TEST = 0;
+      # YATCHY_SHIPPING_MODE = 0;
+      # Battery
+    };
+
+    rawDefines = {
+      # INKWATCHY_LANG = "EN";
+      # WATCHFACE_TEMP_TYPE = "CELSIUS";
+      # VIBRATION_MULTIPLIER = "1.0";
+      # BTN_REMAP_MENU = "BTN_REMAP_VAL_MENU";
+      # BTN_REMAP_BACK = "BTN_REMAP_VAL_BACK";
+      # BTN_REMAP_UP = "BTN_REMAP_VAL_UP";
+      # BTN_REMAP_DOWN = "BTN_REMAP_VAL_DOWN";
+      # MOON_MIN_RADIUS = "56.5";
+      # MOON_MAX_RADIUS = "64.0";
+      # ALARM_QUICK_ID = "MAX_ALARMS";
+      # ALARM_POMODORO_ID = "MAX_ALARMS";
+      # BOOK_FONT = "getFont(\"UbuntuMono10\")";
+      # MODULES_WAITING_DIVISION = "0.75";
+      # CPU_SPEED = "minimalSpeed";
+      # BUTTON_CPU_SPEED = "normalSpeed";
+      # ADD_BUTTON_DELAY = "1.7";
+      # BAT_MINIMAL_DIFFERENCE = "0.02";
+      # DEBUG_CPU_SPEED = "normalSpeed";
+      # BATTERY_TIME_DROP_VOLTAGE = "3.50";
+      # BATTERY_MIN_VOLTAGE = "3.3";
+      # BATTERY_CRIT_VOLTAGE = "3.15";
+      # BATTERY_CHARGE_VOLTAGE = "4.14";
+      # BATTERY_MAX_VOLTAGE = "4.18";
+      # BAD_BATTERY_MAX_VOLTAGE = "4.00";
+      # BAD_BATTERY_CHARGE_VOLTAGE = "4.05";
+      # BATTERY_CHARGE_DETECTION_DIFFERENCE = "0.10";
+    };
+  };
+}

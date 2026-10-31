@@ -57,6 +57,14 @@
         };
         initConfig = makeCatalogueApp "init-config" "init";
         updateOptionCatalogue = makeCatalogueApp "update-option-catalogue" "update";
+        flashWatchy2 = pkgs.writeShellApplication {
+          name = "flash-watchy2";
+          runtimeInputs = with pkgs; [ bash coreutils esptool ];
+          text = ''
+            export INKWATCHY_NIX_ROOT=${./.}
+            exec ${pkgs.bash}/bin/bash ${./scripts/flash-watchy2.sh} "$@"
+          '';
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -99,6 +107,10 @@
         apps.update-option-catalogue = {
           type = "app";
           program = "${updateOptionCatalogue}/bin/update-option-catalogue";
+        };
+        apps.flash-watchy2 = {
+          type = "app";
+          program = "${flashWatchy2}/bin/flash-watchy2";
         };
       });
 }
